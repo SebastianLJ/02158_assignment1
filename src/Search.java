@@ -258,7 +258,9 @@ public class Search {
                 // Overall result is an ordered list of unique occurrence positions
                 result = new LinkedList<Integer>();
                 // Combine future results into an overall result
-
+                for(Future<List<Integer>> f : futures) {
+                    result.addAll(f.get());
+                }
 
                 time = (double) (System.nanoTime() - start) / 1e9;
                 totalTime += time;    
