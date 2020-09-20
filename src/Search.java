@@ -59,12 +59,12 @@ public class Search {
     static int len;                     // Length of actual text
     static String fname;                // Text file name
     static char[] pattern;              // Search pattern
-    static int ntasks = 4;              // No. of tasks
-    static int nthreads = 4;            // No. of threads to use
+    static int ntasks = 1;              // No. of tasks
+    static int nthreads = 1;            // No. of threads to use
     static boolean printPos = false;    // Print all positions found
     static int warmups = 0;             // No. of warmup searches
     static int runs = 1;                // No. of search repetitions
-    static String  datafile;            // Name of data file 
+    static String  datafile;            // Name of data file
 
 
     static void getArguments(String[] argv) {
@@ -230,24 +230,27 @@ public class Search {
             /**********************************************
              * Run search using multiple tasks
              *********************************************/
-         
+
+            /* Setup concurrent execution engine */
+            engine = Executors.newCachedThreadPool();
+
             // Create list of tasks
             List<SearchTask> taskList = new ArrayList<SearchTask>();
             // Add tasks to list here
+            double interval = (double) len / ntasks;
             for (int i = 0; i < ntasks; i++) {
-                //splits in equal parts
-                taskList.add(new SearchTask(text, pattern,len/ntasks*i, len/ntasks*(i+1)));
+                taskList.add(new SearchTask(text, pattern, (int) (i * interval), (int) ((i + 1) * interval)));
             }
 
             List<Integer> result = null;
-            
+
             // Run the tasks a couple of times
             for (int i = 0; i < warmups; i++) {
                 engine.invokeAll(taskList);
             }
-            
+
             totalTime = 0.0;
-            
+
             for (int run = 0; run < runs; run++) {
 
                 start = System.nanoTime();
@@ -258,33 +261,35 @@ public class Search {
                 // Overall result is an ordered list of unique occurrence positions
                 result = new LinkedList<Integer>();
                 // Combine future results into an overall result
-                for(Future<List<Integer>> f : futures) {
-                    result.addAll(f.get());
+                for (Future<List<Integer>> future : futures) {
+                    result.addAll(future.get());
                 }
 
                 time = (double) (System.nanoTime() - start) / 1e9;
-                totalTime += time;    
-                
+                totalTime += time;
+
                 System.out.printf("\nUsing %2d tasks: ", ntasks);
                 writeRun(run);  writeResult(result);  writeTime(time);
             }
 
             double multiTime = totalTime / runs;
-            System.out.printf("\n\nUsing %2d tasks (avg.): ", ntasks); 
+            System.out.printf("\n\nUsing %2d tasks (avg.): ", ntasks);
             writeTime(multiTime);  System.out.println();
 
-            
+
             if (!singleResult.equals(result)) {
                 System.out.println("\nERROR: lists differ");
             }
             System.out.printf("\n\nAverage speedup: %1.2f\n\n", singleTime / multiTime);
+
+            //writeData("Using " + ntasks + " tasks (avg.): " + String.format("%1.6f s", multiTime));
 
 
             /**********************************************
              * Terminate engine after use
              *********************************************/
             engine.shutdown();
-
+            System.exit(0);
         } catch (Exception e) {
             System.out.println("Search: " + e);
         }
