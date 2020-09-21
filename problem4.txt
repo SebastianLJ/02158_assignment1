@@ -1,0 +1,5 @@
+Tasks: 5, Threads: 1, Time: 0.33761047000000005
+Tasks: 5, Threads: 2, Time: 0.20432414
+Tasks: 5, Threads: 3, Time: 0.13550358
+Tasks: 5, Threads: 4, Time: 0.13870721000000003
+Tasks: 5, Threads: 5, Time: 0.11964535000000001
