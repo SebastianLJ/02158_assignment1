@@ -59,7 +59,7 @@ public class Search {
     static int len;                     // Length of actual text
     static String fname;                // Text file name
     static char[] pattern;              // Search pattern
-    static int ntasks = 10;              // No. of tasks
+    static int ntasks = 20;              // No. of tasks
     static int nthreads = 1;            // No. of threads to use
     static boolean printPos = false;    // Print all positions found
     static int warmups = 0;             // No. of warmup searches
@@ -232,7 +232,7 @@ public class Search {
              *********************************************/
 
             /* Setup concurrent execution engine */
-            engine = Executors.newSingleThreadExecutor();
+            engine = Executors.newCachedThreadPool();
 
             // Create list of tasks
             List<SearchTask> taskList = new ArrayList<SearchTask>();
@@ -277,7 +277,7 @@ public class Search {
 
                 //System.out.printf("\nUsing %2d tasks: ", ntasks);
                 //writeRun(run);  writeResult(result);  writeTime(time);
-                writeData(String.format("%1.6f", time));
+               // writeData(String.format("%1.6f", time));
             }
 
             double multiTime = totalTime / runs;
@@ -288,9 +288,10 @@ public class Search {
             if (!singleResult.equals(result)) {
                 System.out.println("\nERROR: lists differ");
             }
-            System.out.printf("\n\nAverage speedup: %1.2f\n\n", singleTime / multiTime);
+           // System.out.printf("\n\nAverage speedup: %1.2f\n\n", singleTime / multiTime);
 
             //writeData("Using " + ntasks + " tasks (avg.): " + String.format("%1.6f s", multiTime));
+            writeData("Average speedup using " + ntasks + "tasks: " + singleTime/multiTime);
 
 
             /**********************************************
