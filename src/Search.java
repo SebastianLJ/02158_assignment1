@@ -239,7 +239,7 @@ public class Search {
             // Add tasks to list here
             double interval = (double) len / ntasks;
             for (int i = 0; i < ntasks; i++) {
-                taskList.add(new SearchTask(text, pattern, (int) (i * interval), (int) ((i + 1) * interval)));
+                taskList.add(new SearchTask(text, pattern, (int) (i * interval), (int) ((i + 1) * interval) + pattern.length));
             }
 
             List<Integer> result = null;
@@ -259,10 +259,17 @@ public class Search {
                 List<Future<List<Integer>>> futures = engine.invokeAll(taskList);
 
                 // Overall result is an ordered list of unique occurrence positions
-                result = new LinkedList<Integer>();
+                result = new LinkedList<>();
+
+                int checker = -1;
                 // Combine future results into an overall result
                 for (Future<List<Integer>> future : futures) {
-                    result.addAll(future.get());
+                    for (Integer integer : future.get()) {
+                        if (checker < integer) {
+                            result.add(integer);
+                            checker = integer;
+                        }
+                    }
                 }
 
                 time = (double) (System.nanoTime() - start) / 1e9;
