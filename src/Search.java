@@ -220,7 +220,6 @@ public class Search {
 
                 //System.out.print("\nSingle task: ");
                 //writeRun(run);  writeResult(singleResult);  writeTime(time);
-                writeData(String.format("%1.6f", time));
             }
 
             double singleTime = totalTime / runs;
