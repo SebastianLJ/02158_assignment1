@@ -59,7 +59,7 @@ public class Search {
     static int len;                     // Length of actual text
     static String fname;                // Text file name
     static char[] pattern;              // Search pattern
-    static int ntasks = 1;              // No. of tasks
+    static int ntasks = 10;              // No. of tasks
     static int nthreads = 1;            // No. of threads to use
     static boolean printPos = false;    // Print all positions found
     static int warmups = 0;             // No. of warmup searches
@@ -218,8 +218,9 @@ public class Search {
                 time = (double) (System.nanoTime() - start) / 1e9;
                 totalTime += time;
 
-                System.out.print("\nSingle task: ");
-                writeRun(run);  writeResult(singleResult);  writeTime(time);
+                //System.out.print("\nSingle task: ");
+                //writeRun(run);  writeResult(singleResult);  writeTime(time);
+                writeData(String.format("%1.6f", time));
             }
 
             double singleTime = totalTime / runs;
@@ -232,7 +233,7 @@ public class Search {
              *********************************************/
 
             /* Setup concurrent execution engine */
-            engine = Executors.newCachedThreadPool();
+            engine = Executors.newSingleThreadExecutor();
 
             // Create list of tasks
             List<SearchTask> taskList = new ArrayList<SearchTask>();
@@ -275,8 +276,9 @@ public class Search {
                 time = (double) (System.nanoTime() - start) / 1e9;
                 totalTime += time;
 
-                System.out.printf("\nUsing %2d tasks: ", ntasks);
-                writeRun(run);  writeResult(result);  writeTime(time);
+                //System.out.printf("\nUsing %2d tasks: ", ntasks);
+                //writeRun(run);  writeResult(result);  writeTime(time);
+                writeData(String.format("%1.6f", time));
             }
 
             double multiTime = totalTime / runs;
