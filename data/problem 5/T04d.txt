@@ -1,0 +1,6 @@
+Average speedup using 1 tasks and 4 threads:0.807147820355457
+Average speedup using 2 tasks and 4 threads:1.2415260514722637
+Average speedup using 3 tasks and 4 threads:1.7219551099771087
+Average speedup using 4 tasks and 4 threads:3.204846711449353
+Average speedup using 5 tasks and 4 threads:2.494279076491573
+Average speedup using 6 tasks and 4 threads:2.7007895971703406

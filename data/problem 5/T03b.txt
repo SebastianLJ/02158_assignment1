@@ -1,0 +1,11 @@
+Average speedup using 1 tasks: 0.903574775063082
+Average speedup using 10 tasks: 7.655471894918148
+Average speedup using 20 tasks: 9.535908499395783
+Average speedup using 30 tasks: 13.094772332586128
+Average speedup using 40 tasks: 12.061204560047086
+Average speedup using 50 tasks: 10.74548039673207
+Average speedup using 60 tasks: 11.005760562583344
+Average speedup using 70 tasks: 12.812087430802622
+Average speedup using 80 tasks: 11.167887704081739
+Average speedup using 90 tasks: 12.14843444712351
+Average speedup using 100 tasks: 12.502768916188861
